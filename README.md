@@ -12,4 +12,11 @@
   + 通过 `git reflog` 可以查看到更详细的操作记录，里面就有所有存在过的版本号
   + 再次通过 `git reset --hard xxxx` 来切换版本
 
-
+## 分支
+- 切换和创建分支
+1. 查看所有分支： `git branch` 
+2. 创建分支：`git branch dev`
+3. 切换分支：`git checkout dev`
+- 合并分支（比如将 dev 分支的代码合并到 master 上）
+  + 先要切换到 master 分支 `git checkout master`
+  + 再将 dev 分支合并到 master，`git merge dev`
