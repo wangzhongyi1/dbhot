@@ -20,3 +20,5 @@
 - 合并分支（比如将 dev 分支的代码合并到 master 上）
   + 先要切换到 master 分支 `git checkout master`
   + 再将 dev 分支合并到 master，`git merge dev`
+- 删除分支（比如一些为了解决bug临时创建的分支）
+  + 删除 bug 分支 `git branch -d bug`
