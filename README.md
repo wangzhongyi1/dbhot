@@ -28,3 +28,11 @@
 ## 推送
 - 远程仓库起别名 `git remote add origin git@github.com:wangzhongyi1/dbhot.git` origin 就是后面仓库地址的别名
 - 推送指定分支的代码 `git push -u origin master`、`git push -u origin dev`
+
+## 克隆
+- `git clone git@github.com:wangzhongyi1/dbhot.git`
+  + 只要克隆了，就拥有了所有的分支信息，只不过不能显示出来，但是你可以直接`git checkout xxx` 来切换分支
+  + 只要克隆了，就自动执行了起别名的语句，你可以直接来用 origin 这个别名进行推送了
+
+## 拉取指定分支的代码
+- `git pull origin dev`
