@@ -76,3 +76,34 @@
 ## 打 tag, 更容易观看版本
 - 本地：`git tag -a v1 -m "第一版"`
 - 远程：`git push origin dev --tags`
+
+## 如何给开源项目贡献代码
+- 第一步：fork 源代码
+  + 点右上角 fork 按钮，就会自动在自己的仓库创建同名项目，并拉取源代码到同名仓库
+- 第二步：将同名项目克隆到本地，然后修改代码
+- 第三步：提交修改的代码
+- 第四步：提交一个 pull request，然后等待作者的回复
+
+
+## 其他
+
+### 配置
+- 项目配置文件：项目/.git/config
+```js
+git config --local user.name "xxx"
+git config --local user.email "xxx.com"
+```
+- 全局配置文件：C:/Users/Administrator/.gitconfig
+```js
+git config --global user.name "xxx"
+git config --global user.email "xxx.com"
+```
+- 系统配置文件：Git的安装目录/etc/.gitconfig
+```js
+git config --system user.name "xxx"
+git config --system user.email "xxx.com"
+
+注意：需要有 root 权限，不然写不进去
+```
+
+
