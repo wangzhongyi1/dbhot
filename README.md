@@ -85,6 +85,28 @@
 - 第四步：提交一个 pull request，然后等待作者的回复
 
 
+## git 高级操作
+
+### 查看操作
+- 查看本次修改内容
+  + `git diff`
+- 查看分支图
+  + `git log --graph --decorate --oneline --simplify-by-decoration --all`
+
+### 撤销操作
+- 撤销本次修改内容（未使用 git add 缓存代码时）
+  + 撤销全部 `git checkout -- .`
+  + 撤销某个文件 `git checkout -- readme.md`
+- 撤销本次修改内容（已经使用了 git add 缓存代码时）
+  + 撤销全部 `git reset HEAD .`
+  + 撤销某个文件 `git reset HEAD readme.md`
+> 此命令用来清除 git 对于文件修改的缓存。仅仅撤出 add 区域，本地修改不会消失。
+****
+- commit 以后，撤销本次提交
+  + 撤销到 add 状态，即不改变修改的代码，仅仅撤出 commit 区域 `git reset --soft HEAD^`
+  + 直接撤销本次修改，会回退到上个版本的代码 `git reset --hard HEAD^`
+
+
 ## 其他
 
 ### 配置
