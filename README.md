@@ -18,7 +18,8 @@
 
 ## 分支
 - 切换和创建分支
-1. 查看所有分支： `git branch` 
+1. 查看本地所有分支： `git branch` 
+  + `git branch -a` 查看所有分支包括远程分支
 2. 创建分支：`git branch dev`
 3. 切换分支：`git checkout dev`
   + 第二和第三步可以合并：`git checkout -b dev` 创建并切换到 dev 分支
@@ -104,6 +105,22 @@ git config --system user.name "xxx"
 git config --system user.email "xxx.com"
 
 注意：需要有 root 权限，不然写不进去
+```
+
+### .gitignore 配置
+```git
+
+*.txt 排除所有 .txt 结尾的文件
+
+!a.html 排除除了 a.html 以外的文件（也就是只管理 a.html 文件）
+
+!files/b.py  在 files 文件夹下排除除了 b.py 以外的文件（也就是在 fiels 文件夹下只管理 b.py 文件）
+
+.gitignore 排除 .gitignore 文件本身
+
+node_modules/  排除 node_modules 文件夹下的所有文件
+
+
 ```
 
 
