@@ -9,6 +9,7 @@
 - 通过 `git log` 查看所有的版本号
 - `git reset --hard xxxx` xxxx 是指通过 git log 查看到的你想回退的版本号
   + 也可以通过 `git reset --hard HEAD^1` 来指定要往前恢复的版本
+  + `git push -f` 让远程的 gitlab 也进行回滚操作
   
 - 你回滚后又想恢复之前的版本
   + 通过 `git reflog` 可以查看到更详细的操作记录，里面就有所有存在过的版本号
@@ -18,7 +19,8 @@
 
 ## 分支
 - 切换和创建分支
-1. 查看所有分支： `git branch` 
+1. 查看本地所有分支： `git branch` 
+  + `git branch -a` 查看所有分支包括远程分支
 2. 创建分支：`git branch dev`
 3. 切换分支：`git checkout dev`
   + 第二和第三步可以合并：`git checkout -b dev` 创建并切换到 dev 分支
@@ -76,3 +78,121 @@
 ## 打 tag, 更容易观看版本
 - 本地：`git tag -a v1 -m "第一版"`
 - 远程：`git push origin dev --tags`
+
+## 如何给开源项目贡献代码
+- 第一步：fork 源代码
+  + 点右上角 fork 按钮，就会自动在自己的仓库创建同名项目，并拉取源代码到同名仓库
+- 第二步：将同名项目克隆到本地，然后修改代码
+- 第三步：提交修改的代码
+- 第四步：提交一个 pull request，然后等待作者的回复
+
+
+## git 高级操作
+
+### 查看操作
+- 查看本次修改内容
+  + `git diff`
+- 查看分支图
+  + `git log --graph --decorate --oneline --simplify-by-decoration --all`
+
+### 撤销操作
+- 撤销本次修改内容（未使用 git add 缓存代码时）
+  + 撤销全部 `git checkout -- .`
+  + 撤销某个文件 `git checkout -- readme.md`
+- 撤销本次修改内容（已经使用了 git add 缓存代码时）
+  + 撤销全部 `git reset HEAD .`
+  + 撤销某个文件 `git reset HEAD readme.md`
+> 此命令用来清除 git 对于文件修改的缓存。仅仅撤出 add 区域，本地修改不会消失。
+****
+- commit 以后，撤销本次提交
+  + 撤销到 add 状态，即不改变修改的代码，仅仅撤出 commit 区域 `git reset --soft HEAD^`
+  + 直接撤销本次修改，会回退到上个版本的代码 `git reset --hard HEAD^`
+
+### git 修改 commit 注释
+- `git rebase -i HEAD~2` 会展示最近的两次提交注释,最后面的数字可更改
+    + 按键盘 `i` 键，进入编辑模式
+    + 把你想要修改的注释的前面的 `pick` 更改为 `edit`
+    + 然后按 `esc` 退出编辑模式，再输入 `:wq` 保存并退出
+- `git commit --amend` 开始编辑注释
+- `git rebase --continue`
+- `git push --force origin master` 强制推送远程仓库，当然你也可以不强制
+- 
+### git push 某个特定的commit
+- `git push <remotename> <commit SHA>:<remotebranchname>`
+    + `remotename` 远程仓库名，默认为 origin
+    + `commit SHA` commit的id
+    + `remotebranchname` 远程分支名
+    + 例如：`git push origin 503edc5aaf:master`
+> 上面的命令会将暂存区内 `commit SHA` 代表的提交 ***以及其之前尚未推送到远程的提交一起提交到远程***
+- 如果想要通过上面命令推送一个指定的commit，就需要保证这个提交之前没有其他的提交了。如果不是，可以通过`git rebase i`改变提交的位置，使其之前没有其他提交
+    + `git rebase i` 会列出暂存区中所有未push的commit
+    + i键 进入编辑模式，光标定位到当前行，输入命令 `:m 0` 就会移入行首，然后输入 `:x` 退出
+    + 最后通过上面的命令 push 这个特定的 commit
+    + 参考：https://blog.csdn.net/u010730126/article/details/100743019
+
+### git 合并某个分支的某次 commit 
+- 例如：在 master分支想要合并 dev分支上的某次提交
+    + 切换到 dev分支，拷贝下来你想要被合并的 commitId
+    + 切换到 master分支，执行 `git cherry-pick 62ecb3` 来进行操作
+
+## 其他
+
+### 配置
+- 项目配置文件：项目/.git/config
+```js
+git config --local user.name "xxx"
+git config --local user.email "xxx.com"
+```
+- 全局配置文件：C:/Users/Administrator/.gitconfig
+```js
+git config --global user.name "xxx"
+git config --global user.email "xxx.com"
+```
+- 系统配置文件：Git的安装目录/etc/.gitconfig
+```js
+git config --system user.name "xxx"
+git config --system user.email "xxx.com"
+
+注意：需要有 root 权限，不然写不进去
+```
+
+### .gitignore 配置
+```git
+
+*.txt 排除所有 .txt 结尾的文件
+
+!a.html 排除除了 a.html 以外的文件（也就是只管理 a.html 文件）
+
+!files/b.py  在 files 文件夹下排除除了 b.py 以外的文件（也就是在 fiels 文件夹下只管理 b.py 文件）
+
+.gitignore 排除 .gitignore 文件本身
+
+node_modules/  排除 node_modules 文件夹下的所有文件
+
+```
+
+### fiddler设置代理
+- 配置抓取 https 参考链接：https://www.cnblogs.com/liulinghua90/p/9109282.html
+- AutoResponder ->  ✔Enable  ❌rules Accept all CONNECTs  ✔Unmatched requests passthrough  ❌Enable Latency  -> Add Rule
+- Rule Editor 上面写需要替换远程的文件名，下面选择本地文件
+- 本地起 vue 项目，调试远程项目
+  + 第一个输入框：regex:(?insx)^http://192.168.89.89/(?<args>.*)$ （远程地址的线上环境的打包后项目）
+  + 第二个输入框：http://localhost:8082/${args} （本地正常起的开发环境的项目，${args}里面会进行正则匹配后替换）
+- 手机端项目代理调试已经生成的APP
+  + 手机连接 wifi, 让电脑和手机在同一个网络下
+  + 点击手机 wifi 后面的感叹号，
+    * 配置 HTTP代理
+    * 切换手动
+    * 服务器填你电脑ip (注意前面不用加`http://`，后面不用加`端口`，只需要写类似 `192.168.5.20` 这样)
+    * 端口写 fidddler的端口，一般没改过是8888
+    * 认证不用开
+    * 存储/保存
+  + 使用自带浏览器 safari 打开你 `电脑ip + 8888` 如：`192.168.5.20:8888` 去下载 Fiddler证书
+  + 然后到 设置->通用->VPN与设备管理 安装上面下载的证书
+  + Fiddler 添加规则
+    * 第一个输入框：regex:(?insx)^http://192.168.89.89/(?<args>.*)$ （APP中的页面真实存放的远程地址）
+    * 第二个输入框：http://localhost:8082/${args} （本地正常起的开发环境的项目）
+  + 这样APP里面的页面也被替换掉了，你再改动本地项目代码，APP里面也被代理改掉了
+  + 最后调试完，记得把 wifi 手动改为关闭就行了，不然你Fiddler关闭后，手机不能正常上网
+
+
